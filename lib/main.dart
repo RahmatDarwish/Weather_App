@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-const String kOwmKey = "30d2777cece5c31be24351fd3e7f6c0a";
+const String kOwmKey = "YOUR_OPENWEATHERMAP_API_KEY_HERE";
 
 void main() {
   runApp(const WeatherApp());
@@ -525,7 +525,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: Opacity(
                         opacity: value,
                         child: Text(
-                          'Project Weather for 1DV535.\nBy Rahmat Darwish.\nData: OpenWeatherMap.',
+                          'Weather App for Everyone.\nBy Rahmat Darwish.\nData: OpenWeatherMap.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey.shade700,

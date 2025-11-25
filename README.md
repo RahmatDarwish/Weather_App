@@ -1,16 +1,16 @@
-# weather_app
+# Weather App
 
-A new Flutter project.
+A dynamic Flutter application that provides real-time weather updates and forecasts based on the user's current location.
 
-## Getting Started
+The app features a polished Material 3 UI, smooth animations, and dynamic background themes that change according to current weather conditions.
 
-This project is a starting point for a Flutter application.
+##  Features
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* **Geolocation Integration:** Automatically detects the user's GPS position to fetch relevant local weather data.
+* **Real-time Weather:** Displays current temperature, city name, date, and detailed weather descriptions.
+* **Detailed Forecast:** Provides a 5-day / 3-hour interval forecast list with specific time slots, temperatures, and icons.
+* **Dynamic UI:**
+    * **Adaptive Gradients:** Background colors shift based on the weather (Sunny, Rainy, Cloudy, Snowy, Stormy, etc.).
+    * **Animations:** Smooth fade-ins, sliding page transitions, and rotating elements for a modern user experience.
+* **Robust Error Handling:** Manages location permission denials, network timeouts, and API errors gracefully.
+* **Material 3 Design:** Utilizes the latest Flutter theming standards.
