@@ -14,3 +14,64 @@ The app features a polished Material 3 UI, smooth animations, and dynamic backgr
     * **Animations:** Smooth fade-ins, sliding page transitions, and rotating elements for a modern user experience.
 * **Robust Error Handling:** Manages location permission denials, network timeouts, and API errors gracefully.
 * **Material 3 Design:** Utilizes the latest Flutter theming standards.
+
+## Screenshots
+
+## Tech Stack & Dependencies
+* **Framework:** [Flutter](https://flutter.dev/) (Dart)
+* **API:** [OpenWeatherMap](https://openweathermap.org/)
+* **Packages used:**
+    * [`http`](https://pub.dev/packages/http) - For handling API requests.
+    * [`geolocator`](https://pub.dev/packages/geolocator) - For accessing device GPS location.
+    * [`intl`](https://pub.dev/packages/intl) - For date and time formatting.
+
+## Getting Started
+Follow these instructions to get a copy of the project up and running on your local machine.
+
+### Prerequisites
+* [Flutter SDK](https://docs.flutter.dev/get-started/install) installed.
+* An Android Emulator or physical device.
+* An API Key from OpenWeatherMap.
+
+### Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [git@github.com:RahmatDarwish/Weather_App.git]
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    flutter pub get
+    ```
+
+3.  **Configure the API Key:**
+    * Sign up at [OpenWeatherMap](https://openweathermap.org/api) to get a free API key.
+    * Open `lib/main.dart`.
+    * Locate the constant at the top of the file:
+        ```dart
+        const String kOwmKey = "YOUR_OPENWEATHERMAP_API_KEY_HERE";
+        ```
+    * Replace the placeholder text with your actual API key.
+
+4.  **Run the App:**
+    ```bash
+    flutter run
+    ```
+
+## Project Structure
+he project currently resides primarily in `main.dart` for simplicity, structured as follows:
+
+* **WeatherApp:** The root widget setting up the Material App theme.
+* **HomeScreen:** Handles the `BottomNavigationBar` navigation logic.
+* **_fetchCurrent:** Async function to call the Current Weather API endpoint.
+* **_fetchForecast:** Async function to call the 5-day Forecast API endpoint.
+* **_getWeatherGradient:** Logic to determine UI colors based on API description strings.
+
+## Permissions
+
+**Android:**
+Ensure your `android/app/src/main/AndroidManifest.xml` includes:
+```xml
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
