@@ -17,6 +17,10 @@ The app features a polished Material 3 UI, smooth animations, and dynamic backgr
 
 ## Screenshots
 
+| Current Weather | Forecast View | About Page | Current Weather (sunny) |
+|:---:|:---:|:---:|:---:|
+| <img src="img/cloudy-current-page.png" width="200"> | <img src="img/cloudy-forecast.png" width="200"> | <img src="img/about.png" width="200"> | <img src="img/sunny-current-page.png" width="200"> |
+
 ## Tech Stack & Dependencies
 * **Framework:** [Flutter](https://flutter.dev/) (Dart)
 * **API:** [OpenWeatherMap](https://openweathermap.org/)
