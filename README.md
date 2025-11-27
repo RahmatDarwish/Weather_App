@@ -21,6 +21,9 @@ The app features a polished Material 3 UI, smooth animations, and dynamic backgr
 |:---:|:---:|:---:|:---:|
 | <img src="img/cloudy-current-page.png" width="200"> | <img src="img/cloudy-forecast.png" width="200"> | <img src="img/about.png" width="200"> | <img src="img/sunny-current-page.png" width="200"> |
 
+* **Vidoe Demonstration** [Video.webm](https://github.com/user-attachments/assets/90fbe5dd-acb3-4e29-8ec3-aecc455b644f)
+
+
 ## Tech Stack & Dependencies
 * **Framework:** [Flutter](https://flutter.dev/) (Dart)
 * **API:** [OpenWeatherMap](https://openweathermap.org/)
