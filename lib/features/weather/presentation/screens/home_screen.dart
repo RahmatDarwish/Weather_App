@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
 import 'package:weather_app/constants/api_keys.dart';
 import 'package:weather_app/features/weather/models/weather_models.dart';
 import 'package:weather_app/features/weather/services/location_service.dart';
 import 'package:weather_app/features/weather/services/weather_service.dart';
+import 'about_screen.dart';
+import 'current_screen.dart';
+import 'forecast_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -239,9 +241,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      _buildCurrentPage(),
-      _buildForecastPage(),
-      _buildAboutPage(),
+      CurrentScreen(
+        weather: _weather,
+        isLoading: _loadingLocation || _loadingWeather,
+        locationStatus: _locationStatus,
+        error: _weatherError,
+        onRefresh: _refreshAll,
+        fadeAnimation: _fadeAnimation,
+        rotationAnimation: _rotationAnimation,
+        weatherGradient: _getWeatherGradient(),
+        isRefreshing: _loadingLocation || _loadingWeather || _loadingForecast,
+      ),
+      ForecastScreen(
+        forecast: _forecast,
+        isLoading: _loadingLocation || _loadingForecast,
+        error: _forecastError,
+      ),
+      AboutScreen(
+        weatherGradient: _getWeatherGradient(),
+      ),
     ];
 
     return Scaffold(
@@ -337,268 +355,4 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildCurrentPage() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: _getWeatherGradient(),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedBuilder(
-                animation: _rotationController,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: _rotationAnimation.value * 2 * 3.14159,
-                    child: const Icon(Icons.wb_sunny_outlined, size: 56),
-                  );
-                },
-              ),
-              const SizedBox(height: 12),
-              Text(
-                _locationStatus,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 12),
-              if (_loadingLocation || _loadingWeather) ...[
-                const CircularProgressIndicator(),
-                Builder(builder: (context) {
-                  if (_loadingWeather || _loadingLocation) {
-                    _rotationController.repeat();
-                  } else {
-                    _rotationController.stop();
-                  }
-                  return const SizedBox.shrink();
-                }),
-              ],
-              if (!_loadingLocation &&
-                  !_loadingWeather &&
-                  _weatherError != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    _weatherError!,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                ),
-              if (!_loadingLocation &&
-                  !_loadingWeather &&
-                  _weatherError == null &&
-                  _weather != null) ...[
-                const SizedBox(height: 8),
-                FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: Column(
-                    children: [
-                      Text(
-                        _weather!.city,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        _weather!.dateText,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.white70,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        _capitalize(_weather!.description),
-                        style: const TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        '${_weather!.tempC.toStringAsFixed(1)} °C',
-                        style: const TextStyle(
-                          fontSize: 44,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              const SizedBox(height: 18),
-              AnimatedScale(
-                scale: (_loadingLocation || _loadingWeather || _loadingForecast)
-                    ? 0.95
-                    : 1.0,
-                duration: const Duration(milliseconds: 150),
-                child: FilledButton.icon(
-                  onPressed: _loadingLocation ||
-                          _loadingWeather ||
-                          _loadingForecast
-                      ? null
-                      : _refreshAll,
-                  icon: AnimatedRotation(
-                    turns: (_loadingLocation ||
-                            _loadingWeather ||
-                            _loadingForecast)
-                        ? 1.0
-                        : 0.0,
-                    duration: const Duration(milliseconds: 500),
-                    child: const Icon(Icons.refresh),
-                  ),
-                  label: const Text('Refresh'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildForecastPage() {
-    Widget content;
-
-    if (_loadingLocation || _loadingForecast) {
-      content = const Center(child: CircularProgressIndicator());
-    } else if (_forecastError != null) {
-      content = Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            _forecastError!,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.red),
-          ),
-        ),
-      );
-    } else if (_forecast.isEmpty) {
-      content = const Center(child: Text('No forecast data yet.'));
-    } else {
-      content = ListView.separated(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        itemCount: _forecast.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 8),
-        itemBuilder: (context, i) {
-          final f = _forecast[i];
-          final timeStr = DateFormat('EEE, MMM d • HH:mm').format(f.timeLocal);
-          final iconUrl = 'https://openweathermap.org/img/wn/${f.icon}@2x.png';
-          return Card(
-            elevation: 2,
-            child: ListTile(
-              leading: Image.network(
-                iconUrl,
-                width: 40,
-                height: 40,
-                errorBuilder: (_, __, ___) => const Icon(Icons.cloud_outlined),
-              ),
-              title: Text(timeStr),
-              subtitle: Text(_capitalize(f.desc)),
-              trailing: Text(
-                '${f.tempC.toStringAsFixed(1)} °C',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.blue.shade100,
-            Colors.white,
-          ],
-        ),
-      ),
-      child: content,
-    );
-  }
-
-  Widget _buildAboutPage() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            _getWeatherGradient().colors.first.withAlpha((0.3 * 255).round()),
-            _getWeatherGradient().colors.last.withAlpha((0.1 * 255).round()),
-            Colors.white,
-          ],
-        ),
-      ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TweenAnimationBuilder(
-                duration: const Duration(milliseconds: 600),
-                tween: Tween<double>(begin: 0.0, end: 1.0),
-                builder: (context, value, child) {
-                  return Transform.scale(
-                    scale: value,
-                    child: Opacity(
-                      opacity: value,
-                      child: Text(
-                        'About',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: _getWeatherGradient()
-                              .colors
-                              .first
-                              .withAlpha((0.8 * 255).round()),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 16),
-              TweenAnimationBuilder(
-                duration: const Duration(milliseconds: 800),
-                tween: Tween<double>(begin: 0.0, end: 1.0),
-                builder: (context, value, child) {
-                  return Transform.translate(
-                    offset: Offset(0, 20 * (1 - value)),
-                    child: Opacity(
-                      opacity: value,
-                        child: Text(
-                          'Weather App.\nBy Rahmat Darwish.\nData: OpenWeatherMap.',
-                          textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.grey.shade700,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _capitalize(String s) {
-    if (s.isEmpty) return s;
-    return s[0].toUpperCase() + s.substring(1);
-  }
 }
