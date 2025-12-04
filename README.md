@@ -54,7 +54,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 3.  **Configure the API Key:**
     * Sign up at [OpenWeatherMap](https://openweathermap.org/api) to get a free API key.
-    * Open `lib/main.dart`.
+    * Open `lib/features/weather/models/weather_models.dart`.
     * Locate the constant at the top of the file:
         ```dart
         const String kOwmKey = "YOUR_OPENWEATHERMAP_API_KEY_HERE";
