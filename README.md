@@ -67,13 +67,38 @@ Follow these instructions to get a copy of the project up and running on your lo
     ```
 
 ## Project Structure
-he project currently resides primarily in `main.dart` for simplicity, structured as follows:
+The project follows a feature-based architecture for scalability and maintainability:
 
-* **WeatherApp:** The root widget setting up the Material App theme.
-* **HomeScreen:** Handles the `BottomNavigationBar` navigation logic.
-* **_fetchCurrent:** Async function to call the Current Weather API endpoint.
-* **_fetchForecast:** Async function to call the 5-day Forecast API endpoint.
-* **_getWeatherGradient:** Logic to determine UI colors based on API description strings.
+```
+lib/
+├── main.dart                 # Application entry point
+├── app.dart                  # Root app widget configuration
+├── constants/
+│   └── api_keys.dart         # API configuration and keys
+└── features/
+    └── weather/
+        ├── models/
+        │   └── weather_models.dart     # Data models for weather data
+        ├── services/
+        │   ├── weather_service.dart    # OpenWeatherMap API integration
+        │   └── location_service.dart   # Geolocation service
+        └── presentation/
+            └── screens/
+                ├── home_screen.dart       # Navigation and BottomNavigationBar
+                ├── current_screen.dart    # Current weather display
+                ├── forecast_screen.dart   # 5-day forecast view
+                └── about_screen.dart      # About page
+```
+
+**Key Components:**
+* **WeatherApp (app.dart):** The root widget setting up the Material 3 theme and app configuration.
+* **HomeScreen:** Manages `BottomNavigationBar` navigation between screens.
+* **CurrentScreen:** Displays current weather with adaptive gradients and animations.
+* **ForecastScreen:** Shows 5-day/3-hour interval forecast data.
+* **AboutScreen:** Application information page.
+* **WeatherService:** Handles OpenWeatherMap API calls and data parsing.
+* **LocationService:** Manages device geolocation and permission handling.
+* **WeatherModels:** Data models for API responses and local state management.
 
 ## Permissions
 
