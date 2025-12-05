@@ -107,3 +107,13 @@ Ensure your `android/app/src/main/AndroidManifest.xml` includes:
 ```xml
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+```
+
+## What I learned
+Working on this project taught me a lot about how real Flutter apps are built. I learned how helpful it is to structure an app using a feature-based architecture, since it keeps everything more organized and easier to maintain.
+
+Integrating the OpenWeatherMap API gave me hands-on experience with working against external services and handling different types of API responses. I also didn’t expect geolocation to be as challenging as it was—managing permissions and handling errors on mobile devices took some extra effort, but it helped me understand how these features behave in real use.
+
+I also spent time exploring Material 3, which made it easier to build a modern, clean UI with smooth animations and adaptive layouts. Another key part was working with async operations. Making sure the UI stays responsive and updates correctly taught me a lot about good state management practices.
+
+Overall, this project was a full learning experience, from planning the architecture to implementing features and debugging issues, and it helped me understand what it’s like to build a complete Flutter application.
